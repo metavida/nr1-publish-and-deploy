@@ -5,6 +5,6 @@ An attempt at building and deploying a Nerdpack using GitHub Actions
 
 ```
 $ docker build . -t nr1-actions
-$ docker run nr1-actions
+$ ./nr1 --version
 ```
 
