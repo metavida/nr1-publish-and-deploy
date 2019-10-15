@@ -1,3 +1,14 @@
 #!/usr/bin/env bash
 
-docker run -it -v ~/.newrelic:/root/.newrelic nr1-actions "$@"
+NR1_IMAGE="${NR1_IMAGE:-nr1-in-docker}"
+
+# First, ensure that a docker image exists for nr1-in-docker
+IMAGE_EXISTS="$(docker image inspect "$NR1_IMAGE" >/dev/null 2>&1; echo $?)"
+if [ "$IMAGE_EXISTS" -ne 0 ]; then
+  echo "Building a docker image for nr1: $NR1_IMAGE" >&2
+  SCRIPT_PATH=$(dirname "$(realpath -s "$0")")
+  docker build "$SCRIPT_PATH" --tag "$NR1_IMAGE" >&2 || exit $?
+fi
+
+# Now run the script!
+docker run -it --volume ~/.newrelic:/root/.newrelic "$NR1_IMAGE" "$@"
