@@ -11,4 +11,4 @@ if [ "$IMAGE_EXISTS" -ne 0 ]; then
 fi
 
 # Now run the script!
-docker run -it --volume ~/.newrelic:/root/.newrelic "$NR1_IMAGE" "$@"
+docker run -it --volume ~/.newrelic:/root/.newrelic --volume "$(pwd):/nerdpack" "$NR1_IMAGE" "$@"
