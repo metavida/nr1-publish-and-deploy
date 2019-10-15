@@ -1,7 +1,4 @@
-FROM ubuntu:latest
-
-RUN apt-get update
-RUN apt-get install -y curl
+FROM node:12
 
 RUN curl -s https://cli.nr-ext.net/installer.sh | bash
 
