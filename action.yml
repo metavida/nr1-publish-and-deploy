@@ -1,0 +1,26 @@
+name: 'New Relic Once Publish & Deploy'
+author: 'Marcos Wright-Kuhns'
+description: 'Publish & Deploy your New Relic Once Nerdpack'
+inputs:
+  api-key:
+    description: 'A "personal" New Relic API Key, that specifies which account & user will be used for publishing your Nerdpack. See https://developer.newrelic.com/client-side-sdk/index.html#cli/Authentication'
+    required: true
+  region:
+    description: 'The Region of the account where you want to publish'
+    required: false
+    default: 'us'
+  channel:
+    description: 'The channel you want to deploy to: STABLE|BETA|DEV'
+    required: false
+    default: 'DEV'
+# outputs:
+#   time: # id of output
+#     description: 'The time we greeted you'
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  entrypoint: 'publish-and-deploy'
+  env:
+    NR1_API_KEY: '${{ inputs.api-key }}'
+    NR1_REGION: '${{ inputs.region }}'
+    NR1_CHANNEL: '${{ inputs.channel }}'

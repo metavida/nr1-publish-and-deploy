@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+NR1_PROFILE='nr1-in-docker'
+
+# Inject nr1 secrets into the container
+nr1 profiles:add --name "$NR1_PROFILE" --api-key "$NR1_API_KEY" --region "$NR1_REGION"
+
+# Publish the Nerdpack
+nr1 nerdpack:publish --profile="$NR1_PROFILE" --verbose
+
+# Then, at long last, deploy the Nerdpack!
+nr1 nerdpack:deploy --channel="$NR1_CHANNEL" --verbose
