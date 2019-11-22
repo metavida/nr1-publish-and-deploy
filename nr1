@@ -2,12 +2,23 @@
 
 NR1_IMAGE="${NR1_IMAGE:-nr1-in-docker}"
 
+function docker_build {
+  echo "Building a docker image for nr1: $NR1_IMAGE" >&2
+  SCRIPT_PATH=$(dirname "$(realpath -s "$0")")
+  docker build "$SCRIPT_PATH" --no-cache --tag "$NR1_IMAGE" >&2 || exit $?
+}
+
+# If the CLI tool is given the option "docker-build"
+# then (re)build the underlying nr1 docker image
+# INSTEAD of executing nr1 within its image.
+if [ "$1" == "docker-build" ]; then
+  docker_build && exit 1
+fi
+
 # First, ensure that a docker image exists for nr1-in-docker
 IMAGE_EXISTS="$(docker image inspect "$NR1_IMAGE" >/dev/null 2>&1; echo $?)"
 if [ "$IMAGE_EXISTS" -ne 0 ]; then
-  echo "Building a docker image for nr1: $NR1_IMAGE" >&2
-  SCRIPT_PATH=$(dirname "$(realpath -s "$0")")
-  docker build "$SCRIPT_PATH" --tag "$NR1_IMAGE" >&2 || exit $?
+  docker_build
 fi
 
 # Now run the script!
