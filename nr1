@@ -22,5 +22,4 @@ if [ "$IMAGE_EXISTS" -ne 0 ]; then
 fi
 
 # Now run the script!
-# TODO: Figure out how to expose the proper ports (perhaps 9972 and 5000)
-docker run -it --volume ~/.newrelic:/root/.newrelic --volume "$(pwd):/nerdpack" "$NR1_IMAGE" "$@"
+docker run -it --volume ~/.newrelic:/root/.newrelic --volume "$(pwd):/nerdpack" -p 5000:5000 -p 9973:9973 "$NR1_IMAGE" "$@"
